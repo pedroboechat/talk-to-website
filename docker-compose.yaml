@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: "./backend"
+      dockerfile: "prod.Dockerfile"
+    container_name: "ttw-backend"
+    restart: "unless-stopped"
+    environment:
+      - "DEBUG=${DEBUG}"
+      - "HOST=${BACKEND_HOST}"
+      - "PORT=${BACKEND_PORT}"
+      - "OPENAI_API_KEY=${OPENAI_API_KEY}"
+      - "OPENAI_MODEL=${OPENAI_MODEL}"
+      - "USER_AGENT=${USER_AGENT}"
+    networks:
+      - "main"
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - "./backend/databases:/srv/app/databases"
+  frontend:
+    build:
+      context: "./frontend"
+      dockerfile: "prod.Dockerfile"
+    container_name: "ttw-frontend"
+    restart: "unless-stopped"
+    environment:
+      - "HOST=${FRONTEND_HOST}"
+      - "PORT=${FRONTEND_PORT}"
+      - "NUXT_PUBLIC_BASE_URL=${BASE_URL}"
+    networks:
+      - "main"
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+  chromadb:
+    image: "chromadb/chroma:0.5.23"
+    container_name: "ttw-chromadb"
+    restart: "unless-stopped"
+    environment:
+      - "ANONYMIZED_TELEMETRY=false"
+      - "IS_PERSISTENT=true"
+    networks:
+      - "main"
+    expose:
+      - "8000"
+    volumes:
+      - "./chromadb:/chroma/chroma"
+
+networks:
+  main:
+    name: "ttw_net"

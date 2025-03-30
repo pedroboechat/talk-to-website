@@ -1,0 +1,11 @@
+beautifulsoup4==4.12.3
+flask==3.0.3
+flask-cors==4.0.1
+gunicorn==23.0.0
+langchain==0.2.13
+langchain-community==0.2.12
+langchain-chroma==0.1.2
+langchain-openai==0.1.21
+langchainhub==0.1.21
+requests==2.32.3
+sqlalchemy==2.0.32
