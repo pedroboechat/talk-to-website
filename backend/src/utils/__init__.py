@@ -48,7 +48,7 @@ def get_or_create_retriever(url: str, url_hash: str) -> VectorStoreRetriever | N
             embedding_function=OpenAIEmbeddings(),
             create_collection_if_not_exists=False,
         ).as_retriever()
-    except ValueError:
+    except:
         try:
             # Scrape website source code
             loader = WebBaseLoader(web_paths=(url,), raise_for_status=True)
